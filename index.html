@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pixeldachs Post-Maker</title>
+  <meta name="theme-color" content="#111827" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111827;
+      --muted: #6b7280;
+      --text: #e5e7eb;
+      --accent: #22c55e;
+      --accent2: #60a5fa;
+      --danger: #ef4444;
+      --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji"; }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 20px; }
+    header { display:flex; align-items:center; gap:12px; margin-bottom: 12px; }
+    .logo { width:42px; height:42px; border-radius:10px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display:grid; place-items:center; font-weight:800; }
+    h1 { font-size: 20px; margin: 0; letter-spacing: .3px; }
+    .card { background:var(--card); border:1px solid #1f2937; border-radius: 16px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    .grid { display:grid; gap:12px; }
+    label { font-size: 13px; color: var(--muted); }
+    input[type="text"], select, textarea {
+      width:100%; padding: 12px 14px; border-radius: 12px; border:1px solid #374151; background:#0f172a; color:var(--text);
+      outline: none; font-size: 15px;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--accent2); }
+    textarea { min-height: 120px; resize: vertical; font-family: var(--mono); }
+    .row { display:grid; grid-template-columns: 1fr; gap:12px; }
+    @media (min-width:720px) { .row { grid-template-columns: 1fr 1fr; } }
+    .btns { display:flex; flex-wrap: wrap; gap:10px; }
+    button {
+      border:0; padding: 12px 14px; border-radius: 12px; background: #1d4ed8; color:#fff; font-weight: 700;
+      box-shadow: 0 6px 16px rgba(29,78,216,.35); letter-spacing:.2px;
+    }
+    button.secondary { background:#10b981; box-shadow: 0 6px 16px rgba(16,185,129,.35); }
+    button.ghost { background: transparent; color: #9ca3af; border:1px dashed #374151; }
+    .small { font-size: 12px; color: var(--muted); }
+    .out { background:#0b1020; border:1px solid #1f2937; border-radius: 12px; padding:12px; }
+    .caption { white-space: pre-wrap; font-family: var(--mono); line-height: 1.35; font-size: 14px; }
+    .pill { font-size: 12px; color:#93c5fd; background:#0b1228; border:1px solid #1f2a4a; padding:4px 8px; border-radius:999px; }
+    .footer { margin-top: 14px; display:flex; justify-content: space-between; align-items:center; gap:10px; }
+    .warn { color: #fca5a5; }
+    .copy { background:#334155; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">P</div>
+      <div>
+        <h1>Pixeldachs Post‑Maker</h1>
+        <div class="small">Aus URL/ASIN → Affiliate‑Link + 3 Captions für WhatsApp</div>
+      </div>
+    </header>
+
+    <div class="card grid">
+      <div class="grid">
+        <label for="url">Amazon URL oder ASIN</label>
+        <input type="text" id="url" placeholder="z.B. https://www.amazon.de/dp/B0C123ABCD/ oder B0C123ABCD">
+      </div>
+      <div class="row">
+        <div>
+          <label for="tag">Dein Partner‑Tag</label>
+          <input type="text" id="tag" placeholder="z.B. pixeldachs-21">
+        </div>
+        <div>
+          <label for="nutzen">Nutzungs‑Szenario (optional)</label>
+          <input type="text" id="nutzen" placeholder="z.B. Bernstein am Strand">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="style">Stil</label>
+          <select id="style">
+            <option value="entdecker">Entdecker</option>
+            <option value="retro">Retro‑Comic</option>
+            <option value="neutral">Neutral</option>
+          </select>
+        </div>
+        <div>
+          <label for="domain">Amazon‑Domain</label>
+          <select id="domain">
+            <option value="https://www.amazon.de">amazon.de</option>
+            <option value="https://www.amazon.com">amazon.com</option>
+            <option value="https://www.amazon.it">amazon.it</option>
+            <option value="https://www.amazon.fr">amazon.fr</option>
+            <option value="https://www.amazon.es">amazon.es</option>
+            <option value="https://www.amazon.co.uk">amazon.co.uk</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btns">
+        <button id="gen">Generieren</button>
+        <button class="ghost" id="clear">Zurücksetzen</button>
+      </div>
+
+      <div class="small">Tipp: Wenn du eine komplette Amazon‑URL einfügst, wird ASIN & Domain automatisch erkannt.</div>
+    </div>
+
+    <div class="card grid" style="margin-top:14px;">
+      <div class="grid">
+        <div class="pill">Ergebnis</div>
+        <div id="asinOut" class="small"></div>
+        <div id="linkOut" class="out"></div>
+      </div>
+
+      <div class="grid">
+        <div class="pill">Caption 1 – Kurz & knackig</div>
+        <div class="out caption" id="cap1"></div>
+        <div class="btns">
+          <button class="copy" data-copy="#cap1">Kopieren</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="pill">Caption 2 – Mini‑Story</div>
+        <div class="out caption" id="cap2"></div>
+        <div class="btns">
+          <button class="copy" data-copy="#cap2">Kopieren</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="pill">Caption 3 – Nutzenliste</div>
+        <div class="out caption" id="cap3"></div>
+        <div class="btns">
+          <button class="copy" data-copy="#cap3">Kopieren</button>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span class="small">⚠️ Hinweis: Für PWA‑Installation musst du die Dateien über HTTPS hosten (z. B. GitHub Pages).</span>
+        <button class="secondary" id="installBtn" style="display:none;">App installieren</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // PWA install prompt
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
+    });
+    installBtn?.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
+    });
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(()=>{});
+      });
+    }
+
+    const urlEl = document.getElementById('url');
+    const tagEl = document.getElementById('tag');
+    const nutzenEl = document.getElementById('nutzen');
+    const styleEl = document.getElementById('style');
+    const domainEl = document.getElementById('domain');
+    const asinOut = document.getElementById('asinOut');
+    const linkOut = document.getElementById('linkOut');
+    const cap1 = document.getElementById('cap1');
+    const cap2 = document.getElementById('cap2');
+    const cap3 = document.getElementById('cap3');
+
+    function extractASIN(input) {
+      input = input.trim();
+      // If it's a bare ASIN
+      if (/^[A-Z0-9]{10}$/.test(input)) return input;
+      // Try to auto-select domain from URL
+      try {
+        const u = new URL(input);
+        if (u.host.includes('amazon.')) {
+          if (u.host) {
+            const proto = u.protocol || 'https:';
+            const dom = proto + '//' + u.host;
+            // set domain select to match
+            Array.from(domainEl.options).forEach(opt => {
+              if (opt.value.includes(u.host)) domainEl.value = opt.value;
+            });
+          }
+        }
+      } catch (e) {}
+      // Extract ASIN from common URL patterns
+      const m = input.match(/(?:\/dp\/|\/gp\/product\/|\/product\/)([A-Z0-9]{10})/i);
+      return m ? m[1].toUpperCase() : null;
+    }
+
+    function buildLink(asin, tag, domain) {
+      const base = (domain || 'https://www.amazon.de').replace(/\/$/, '');
+      const url = `${base}/dp/${asin}?tag=${encodeURIComponent(tag)}`;
+      return url;
+    }
+
+    function styleBits(s) {
+      switch (s) {
+        case 'retro': return { emoji1: '🕶️', emoji2:'📼', hash: '#retro #comic #pixeldachs' };
+        case 'entdecker': return { emoji1: '🧭', emoji2:'🔦', hash: '#entdeckt #gadget #pixeldachs' };
+        default: return { emoji1: '✨', emoji2:'🧰', hash: '#gadget #dailyfind #pixeldachs' };
+      }
+    }
+
+    function captions(product, nutzen, link, mode='entdecker') {
+      const s = styleBits(mode);
+      const hint = "\n\nℹ️ Hinweis: Affiliate‑Link. Als Amazon‑Partner verdiene ich an qualifizierten Verkäufen.";
+      const cap1 = `${s.emoji2} Pixeldachs entdeckt: ${product}\nWarum cool? ${nutzen || 'smarte Lösung für den Alltag'}\n👉 ${link}${hint}`.trim();
+
+      const story = `Gestern getestet: ${product} – funktioniert! ${s.emoji1}\nFür ${nutzen || 'schnelle Einsätze'} echt praktisch. Würde ich wieder nehmen.\nHier ist es: ${link}${hint}`.trim();
+
+      const list = `Warum ich ${product} mag:\n• ${nutzen || 'einfach, schnell, nützlich'}\n• robust & fix einsatzbereit\n• fairer Preis\n\n🔗 ${link}\n(Partnerlink – Danke für deinen Support!)`.trim();
+
+      return { cap1, story, list, tags: s.hash + ' #amazonfinds' };
+    }
+
+    function guessProductName(asin) {
+      // Placeholder – in der Halb‑Automation verzichten wir auf Live‑Scrape.
+      // Der Nutzer kann hier einen Namen tippen, wenn er mag.
+      // Wenn keine Eingabe, erzeugen wir einen neutralen Namen.
+      return 'Gadget';
+    }
+
+    function renderResults({asin, link, product, nutzen, caps}) {
+      asinOut.textContent = asin ? `ASIN erkannt: ${asin}` : 'ASIN nicht erkannt – prüfe Eingabe.';
+      linkOut.textContent = link || '';
+      cap1.textContent = caps.cap1 + "\n\n" + caps.tags;
+      cap2.textContent = caps.story + "\n\n" + caps.tags;
+      cap3.textContent = caps.list + "\n\n" + caps.tags;
+    }
+
+    function generate() {
+      const raw = urlEl.value.trim();
+      const tag = tagEl.value.trim();
+      const nutzen = nutzenEl.value.trim();
+      const style = styleEl.value;
+
+      if (!raw) { alert('Bitte Amazon‑URL oder ASIN einfügen.'); return; }
+      if (!tag) { alert('Bitte deinen Partner‑Tag eingeben.'); return; }
+
+      const asin = extractASIN(raw);
+      if (!asin) { alert('Konnte keine ASIN finden. Prüfe die URL/Eingabe.'); return; }
+
+      const link = buildLink(asin, tag, domainEl.value);
+      const product = guessProductName(asin);
+      const caps = captions(product, nutzen, link, style);
+      renderResults({asin, link, product, nutzen, caps});
+    }
+
+    document.getElementById('gen').addEventListener('click', generate);
+    document.getElementById('clear').addEventListener('click', () => {
+      [urlEl, tagEl, nutzenEl].forEach(el => el.value='');
+      [asinOut, linkOut, cap1, cap2, cap3].forEach(el => el.textContent='');
+    });
+
+    // Copy buttons
+    document.querySelectorAll('button.copy').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const sel = btn.getAttribute('data-copy');
+        const el = document.querySelector(sel);
+        if (!el) return;
+        try {
+          await navigator.clipboard.writeText(el.textContent);
+          btn.textContent = 'Kopiert ✓';
+          setTimeout(()=>btn.textContent='Kopieren',1200);
+        } catch {
+          alert('Konnte nicht kopieren – markiere den Text manuell.');
+        }
+      });
+    });
+
+    // Auto domain detection when user pastes URL
+    urlEl.addEventListener('change', () => {
+      const v = urlEl.value.trim();
+      try {
+        const u = new URL(v);
+        Array.from(domainEl.options).forEach(opt => {
+          if (opt.value.includes(u.host)) domainEl.value = opt.value;
+        });
+      } catch {}
+    });
+  </script>
+</body>
+</html>
