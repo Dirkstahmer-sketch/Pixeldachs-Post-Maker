@@ -52,7 +52,7 @@ button.secondary{background:linear-gradient(135deg,var(--violet),var(--yellow))}
   </div>
   <div class="btns">
     <button id="gen">Generieren</button>
-    <button class="ghost" id="savePrefs">Einstellungen speichern</button>
+    <button class="ghost" id="savePrefsBtn">Einstellungen speichern</button>
     <button class="ghost" id="clear">Zurücksetzen</button>
     <button class="secondary" id="share">Teilen</button>
     <button class="ghost" id="resetCache">Cache zurücksetzen</button>
@@ -75,21 +75,28 @@ button.secondary{background:linear-gradient(135deg,var(--violet),var(--yellow))}
 <div id="toast" class="toast"></div>
 
 <script>
-let deferredPrompt;const installBtn=document.getElementById('installBtn');
+// Helpers to pick elements safely
+const $ = (id)=>document.getElementById(id);
+
+// PWA
+let deferredPrompt; const installBtn=$('installBtn');
 window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='inline-block';});
 installBtn?.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.style.display='none';});
 if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}
 
-const urlEl=url, tagEl=tag, nutzenEl=nutzen, productEl=product, styleEl=style, domainEl=domain, hashtagsEl=hashtags, autocopyEl=autocopy;
-const asinOut=document.getElementById('asinOut'), linkOut=document.getElementById('linkOut');
+// Elements
+const urlEl=$('url'), tagEl=$('tag'), nutzenEl=$('nutzen'), productEl=$('product'), styleEl=$('style'), domainEl=$('domain'), hashtagsEl=$('hashtags'), autocopyEl=$('autocopy');
+const asinOut=$('asinOut'), linkOut=$('linkOut');
+const cap1=$('cap1'), cap2=$('cap2'), cap3=$('cap3'), cap4=$('cap4'), cap5=$('cap5'), cap6=$('cap6');
 const capsEls=[cap1,cap2,cap3,cap4,cap5,cap6];
-const toast=document.getElementById('toast');
-const LSKEY='pixeldachs_prefs_v3_1';
+const toast=$('toast');
+const genBtn=$('gen'), clearBtn=$('clear'), copyAllBtn=$('copyAll'), shareBtn=$('share'), savePrefsBtn=$('savePrefsBtn'), resetCacheBtn=$('resetCache');
+const LSKEY='pixeldachs_prefs_v3_1_1';
 function showToast(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1400)}
 
 function loadPrefs(){try{const raw=localStorage.getItem(LSKEY);if(!raw)return;const p=JSON.parse(raw);if(p.tag)tagEl.value=p.tag;if(p.style)styleEl.value=p.style;if(p.hashtags)hashtagsEl.value=p.hashtags;if(p.autocopy)autocopyEl.value=p.autocopy;}catch{}}
 function savePrefs(){const p={tag:tagEl.value.trim(),style:styleEl.value,hashtags:hashtagsEl.value.trim(),autocopy:autocopyEl.value};localStorage.setItem(LSKEY,JSON.stringify(p));showToast('Einstellungen gespeichert')}
-savePrefsBtn.onclick=savePrefs;loadPrefs();
+savePrefsBtn.addEventListener('click',savePrefs);loadPrefs();
 
 function extractASIN(input){
   input=(input||'').trim();
@@ -102,20 +109,13 @@ function extractASIN(input){
 function buildLink(asin,tag,domain){const base=(domain||'https://www.amazon.de').replace(/\/$/,'');return `${base}/dp/${asin}?tag=${encodeURIComponent(tag)}`}
 function tagsString(){const raw=hashtagsEl.value.trim();return raw?raw.split(',').map(s=>s.trim()).filter(Boolean).join(' '):''}
 function makeCaptions(name,nutzen,link){
-  const tags=tagsString();const add=(t)=>tags?`${t}
-${tags}`:t;
-  const c1=add([`🔦 ${name}: Lösung in Sekunden`,nutzen?`• Dafür gemacht: ${nutzen}`:`• Spart Zeit & Nerven`,`• Ein Griff, fertig`,`👉 ${link}`].join('
-'));
-  const c2=add([`Warum ${name} überzeugt:`,`✓ Nutzen: ${nutzen||'direkt spürbar'}`,`✓ top bewertet & oft gekauft`,`✓ fairer Preis`,`Jetzt checken → ${link}`].join('
-'));
-  const c3=add([`Erst dunkel – dann Aha mit ${name}.`,`${nutzen||'Im Alltag schon mehrfach gerettet.'}`,`Einmal probiert, willst du's behalten.`,`Hier entlang: ${link}`].join('
-'));
-  const c4=add([`🔥 Heute stark: ${name}`,`Sparen statt suchen – solange verfügbar.`,`Direkt zum Angebot → ${link}`].join('
-'));
-  const c5=add([`⚙️ ${name} – Kurz-Specs:`,`• Highlight: ${nutzen||'praktischer Einsatz'}`,`• robust & schnell einsatzbereit`,`• Bestseller-Status`,`Details: ${link}`].join('
-'));
-  const c6=add([`Warum ${name} statt Alternative?`,`• besser bewertet`,`• preislich attraktiv`,`• sofort lieferbar`,`Vergleich hier: ${link}`].join('
-'));
+  const tags=tagsString();const add=(t)=>tags?`${t}\n${tags}`:t;
+  const c1=add([`🔦 ${name}: Lösung in Sekunden`,nutzen?`• Dafür gemacht: ${nutzen}`:`• Spart Zeit & Nerven`,`• Ein Griff, fertig`,`👉 ${link}`].join('\n'));
+  const c2=add([`Warum ${name} überzeugt:`,`✓ Nutzen: ${nutzen||'direkt spürbar'}`,`✓ top bewertet & oft gekauft`,`✓ fairer Preis`,`Jetzt checken → ${link}`].join('\n'));
+  const c3=add([`Erst dunkel – dann Aha mit ${name}.`,`${nutzen||'Im Alltag schon mehrfach gerettet.'}`,`Einmal probiert, willst du's behalten.`,`Hier entlang: ${link}`].join('\n'));
+  const c4=add([`🔥 Heute stark: ${name}`,`Sparen statt suchen – solange verfügbar.`,`Direkt zum Angebot → ${link}`].join('\n'));
+  const c5=add([`⚙️ ${name} – Kurz-Specs:`,`• Highlight: ${nutzen||'praktischer Einsatz'}`,`• robust & schnell einsatzbereit`,`• Bestseller-Status`,`Details: ${link}`].join('\n'));
+  const c6=add([`Warum ${name} statt Alternative?`,`• besser bewertet`,`• preislich attraktiv`,`• sofort lieferbar`,`Vergleich hier: ${link}`].join('\n'));
   return[c1,c2,c3,c4,c5,c6];
 }
 function render({asin,link,product,nutzen}){
@@ -124,20 +124,21 @@ function render({asin,link,product,nutzen}){
   asinOut.textContent=asin?`ASIN erkannt: ${asin}`:'ASIN nicht erkannt – prüfe Eingabe.';
   linkOut.textContent=link||'';
   arr.forEach((t,i)=>capsEls[i].textContent=t);
-  if(autocopyEl.value==='cap1'){navigator.clipboard?.writeText(arr[0]).then(()=>showToast('Caption 1 kopiert'))}
+  if(autocopyEl.value==='cap1'){navigator.clipboard?.writeText(arr[0]).then(()=>showToast('Caption 1 kopiert')).catch(()=>{})}
 }
-gen.onclick=function(){
+
+genBtn.addEventListener('click',()=>{
   const raw=urlEl.value.trim(), tag=tagEl.value.trim(), nutzen=nutzenEl.value.trim(), product=productEl.value.trim();
   if(!raw){showToast('Bitte Amazon-URL oder ASIN eingeben.');return}
   if(!tag){showToast('Partner-Tag fehlt.');return}
   const asin=extractASIN(raw);if(!asin){showToast('Keine ASIN gefunden.');return}
   const link=buildLink(asin,tag,domainEl.value);render({asin,link,product,nutzen});
-}
-clear.onclick=function(){[urlEl,nutzenEl,productEl].forEach(el=>el.value='');asinOut.textContent='';linkOut.textContent='';capsEls.forEach(el=>el.textContent='')}
+});
+clearBtn.addEventListener('click',()=>{[urlEl,nutzenEl,productEl].forEach(el=>el.value='');asinOut.textContent='';linkOut.textContent='';capsEls.forEach(el=>el.textContent='')});
 document.querySelectorAll('button.copy').forEach(btn=>btn.addEventListener('click',async()=>{const sel=btn.getAttribute('data-copy');const el=document.querySelector(sel);if(!el)return;try{await navigator.clipboard.writeText(el.textContent);btn.textContent='Kopiert ✓';setTimeout(()=>btn.textContent='Kopieren',1100)}catch{showToast('Kopieren nicht möglich')}}));
-copyAll.onclick=async function(){const all=capsEls.map(el=>el.textContent).filter(Boolean).join('\n\n');if(!all){showToast('Nichts zum Kopieren.');return}try{await navigator.clipboard.writeText(all);copyAll.textContent='Alle kopiert ✓';setTimeout(()=>copyAll.textContent='Alle kopieren',1100)}catch{showToast('Kopieren nicht möglich')}}
-share.onclick=async function(){const text=capsEls.find(el=>el.textContent)?.textContent||linkOut.textContent;if(!text){showToast('Bitte erst generieren.');return}if(navigator.share){try{await navigator.share({text})}catch{}}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}}
-resetCache.onclick=async function(){try{if('caches'in window){const names=await caches.keys();await Promise.all(names.map(n=>caches.delete(n)));}if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}localStorage.removeItem(LSKEY);showToast('Cache & SW gelöscht – lade neu …');setTimeout(()=>location.reload(true),800);}catch(e){showToast('Reset fehlgeschlagen')}}
-urlEl.addEventListener('change',()=>{const v=urlEl.value.trim();try{const u=new URL(v);Array.from(domainEl.options).forEach(opt=>{if(opt.value.includes(u.host))domainEl.value=opt.value})}catch{}})
+copyAllBtn.addEventListener('click',async()=>{const all=capsEls.map(el=>el.textContent).filter(Boolean).join('\n\n');if(!all){showToast('Nichts zum Kopieren.');return}try{await navigator.clipboard.writeText(all);copyAllBtn.textContent='Alle kopiert ✓';setTimeout(()=>copyAllBtn.textContent='Alle kopieren',1100)}catch{showToast('Kopieren nicht möglich')}});
+shareBtn.addEventListener('click',async()=>{const text=capsEls.find(el=>el.textContent)?.textContent||linkOut.textContent;if(!text){showToast('Bitte erst generieren.');return}if(navigator.share){try{await navigator.share({text})}catch{}}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}});
+resetCacheBtn.addEventListener('click',async()=>{try{if('caches'in window){const names=await caches.keys();await Promise.all(names.map(n=>caches.delete(n)));}if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}localStorage.removeItem(LSKEY);showToast('Cache & SW gelöscht – lade neu …');setTimeout(()=>location.reload(true),800);}catch(e){showToast('Reset fehlgeschlagen')}});
+urlEl.addEventListener('change',()=>{const v=urlEl.value.trim();try{const u=new URL(v);Array.from(domainEl.options).forEach(opt=>{if(opt.value.includes(u.host))domainEl.value=opt.value})}catch{}});
 </script>
 </body></html>
