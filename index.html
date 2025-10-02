@@ -1,59 +1,70 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pixeldachs Post‑Maker</title><meta name="theme-color" content="#0a0a0b"><link rel="manifest" href="manifest.webmanifest">
+<html lang="de">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Pixeldachs Post-Maker</title>
+<meta name="theme-color" content="#0a0a0b"/>
+<link rel="manifest" href="manifest.webmanifest"/>
 <style>
 :root{--bg:#0a0a0b;--card:#111216;--muted:#a3a3b0;--text:#f1f5f9;--pink:#ff2f7a;--green:#43b047;--violet:#5b3fb3;--yellow:#ffd400;--outline:#222433;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
-*{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,"Helvetica Neue",Arial}
-.wrap{max-width:980px;margin:0 auto;padding:16px} header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,"Helvetica Neue",Arial}
+.wrap{max-width:980px;margin:0 auto;padding:16px}header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .logoWrap{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--yellow));display:grid;place-items:center;border:1px solid var(--outline);overflow:hidden}
 .logoWrap img{width:100%;height:100%;object-fit:cover}
 h1{font-size:22px;margin:0;letter-spacing:.3px}.sub{color:var(--muted);font-size:12px}
+.band{height:4px;background:linear-gradient(90deg,var(--pink),var(--green),var(--violet),var(--yellow));border-radius:999px;margin:10px 0 14px}
 .card{background:var(--card);border:1px solid var(--outline);border-radius:18px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.grid{display:grid;gap:12px} label{font-size:12px;color:var(--muted)}
-input[type="text"],select,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--outline);background:#0c0d12;color:var(--text);outline:none;font-size:15px}
-input[type="text"]:focus,textarea:focus,select:focus{border-color:var(--violet)} textarea{min-height:120px;resize:vertical;font-family:var(--mono)}
-.row{display:grid;grid-template-columns:1fr;gap:12px}@media (min-width:840px){.row{grid-template-columns:1fr 1fr}}
-.btns{display:flex;flex-wrap:wrap;gap:10px} button{border:0;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--pink));color:#0a0a0b;font-weight:800;letter-spacing:.2px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.35)}
-button.secondary{background:linear-gradient(135deg,var(--violet),var(--yellow))} button.ghost{background:transparent;color:#cbd5e1;border:1px dashed var(--outline)}
-.small{font-size:12px;color:var(--muted)} .out{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;padding:12px}
+.grid{display:grid;gap:12px}label{font-size:12px;color:var(--muted)}
+input[type="text"],select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--outline);background:#0c0d12;color:var(--text);outline:none;font-size:15px}
+input[type="text"]:focus,select:focus{border-color:var(--violet)}.row{display:grid;grid-template-columns:1fr;gap:12px}@media(min-width:840px){.row{grid-template-columns:1fr 1fr}}
+.btns{display:flex;flex-wrap:wrap;gap:10px}button{border:0;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--pink));color:#0a0a0b;font-weight:800;letter-spacing:.2px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+button.secondary{background:linear-gradient(135deg,var(--violet),var(--yellow))}button.ghost{background:transparent;color:#cbd5e1;border:1px dashed var(--outline)}
+.small{font-size:12px;color:var(--muted)}.out{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;padding:12px}
 .caption{white-space:pre-wrap;font-family:var(--mono);line-height:1.35;font-size:14px}
 .pill{font-size:11px;color:#0a0a0b;background:linear-gradient(90deg,var(--pink),var(--green),var(--violet),var(--yellow));padding:4px 10px;border-radius:999px;width:max-content}
 .footer{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.copy{background:#2b2f44;color:#e5e7eb}.band{height:4px;background:linear-gradient(90deg,var(--pink),var(--green),var(--violet),var(--yellow));border-radius:999px;margin:10px 0 14px}
-.sectionTitle{display:flex;align-items:center;gap:8px}.sectionTitle span.bar{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--pink);box-shadow:12px 0 0 var(--green),24px 0 0 var(--violet),36px 0 0 var(--yellow)}
-</style></head>
+.toast{position:fixed;left:12px;right:12px;bottom:12px;background:#111216;color:#e5e7eb;border:1px solid #2c2f3d;border-radius:12px;padding:10px 12px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s}
+.toast.show{opacity:1;transform:translateY(0)}
+</style>
+</head>
 <body>
 <div class="wrap">
-<header><div class="logoWrap"><img src="logo.png" alt="Pixeldachs"></div>
-<div><h1>Pixeldachs Post‑Maker</h1><div class="sub">Aus URL/ASIN → Affiliate‑Link + 6 konvertierende Captions</div></div></header>
+<header><div class="logoWrap"><img src="logo.png" alt="Pixeldachs"/></div>
+<div><h1>Pixeldachs Post-Maker</h1><div class="sub">Aus URL/ASIN → Affiliate-Link + 6 konvertierende Captions</div></div></header>
 <div class="band"></div>
+
 <div class="card grid">
-  <div class="sectionTitle"><span class="bar"></span><strong>Eingaben</strong></div>
   <div class="row">
-    <div><label for="url">Amazon URL oder ASIN</label><input type="text" id="url" placeholder="z.B. https://www.amazon.de/dp/B0C123ABCD/ oder B0C123ABCD"></div>
-    <div><label for="tag">Dein Partner‑Tag (wird lokal gespeichert)</label><input type="text" id="tag" placeholder="z.B. pixeldachs-21"></div>
+    <div><label for="url">Amazon URL oder ASIN</label><input type="text" id="url" placeholder="https://www.amazon.de/dp/B0C123ABCD/ oder B0C123ABCD"/></div>
+    <div><label for="tag">Dein Partner-Tag (wird lokal gespeichert)</label><input type="text" id="tag" placeholder="z.B. pixeldachs-21"/></div>
   </div>
   <div class="row">
-    <div><label for="nutzen">Nutzungs‑Szenario (optional, 3–6 Wörter)</label><input type="text" id="nutzen" placeholder="z.B. Bernstein am Strand, Haustier‑Check"></div>
-    <div><label for="product">Produktname (optional)</label><input type="text" id="product" placeholder="z.B. UV‑Taschenlampe 395 nm"></div>
+    <div><label for="nutzen">Nutzungs-Szenario (optional, 3–6 Wörter)</label><input type="text" id="nutzen" placeholder="z.B. Bernstein am Strand"/></div>
+    <div><label for="product">Produktname (optional)</label><input type="text" id="product" placeholder="z.B. UV-Taschenlampe 395 nm"/></div>
   </div>
   <div class="row">
-    <div><label for="style">Tonality</label><select id="style"><option value="entdecker">Entdecker</option><option value="retro">Retro‑Comic</option><option value="neutral">Neutral</option></select></div>
-    <div><label for="domain">Amazon‑Domain</label><select id="domain"><option value="https://www.amazon.de">amazon.de</option><option value="https://www.amazon.com">amazon.com</option><option value="https://www.amazon.it">amazon.it</option><option value="https://www.amazon.fr">amazon.fr</option><option value="https://www.amazon.es">amazon.es</option><option value="https://www.amazon.co.uk">amazon.co.uk</option></select></div>
+    <div><label for="style">Tonality</label><select id="style"><option value="entdecker">Entdecker</option><option value="retro">Retro-Comic</option><option value="neutral">Neutral</option></select></div>
+    <div><label for="domain">Amazon-Domain</label><select id="domain"><option value="https://www.amazon.de">amazon.de</option><option value="https://www.amazon.com">amazon.com</option><option value="https://www.amazon.it">amazon.it</option><option value="https://www.amazon.fr">amazon.fr</option><option value="https://www.amazon.es">amazon.es</option><option value="https://www.amazon.co.uk">amazon.co.uk</option></select></div>
   </div>
   <div class="row">
-    <div><label for="hashtags">Hashtag‑Presets (kommasepariert)</label><input type="text" id="hashtags" placeholder="#pixeldachs,#entdeckt,#gadget,#amazonfinds"></div>
-    <div><label for="autocopy">Auto‑Copy</label><select id="autocopy"><option value="none">Aus</option><option value="cap1">Caption 1</option></select></div>
+    <div><label for="hashtags">Hashtag-Presets (kommasepariert)</label><input type="text" id="hashtags" placeholder="#pixeldachs,#entdeckt,#gadget,#amazonfinds"/></div>
+    <div><label for="autocopy">Auto-Copy</label><select id="autocopy"><option value="none">Aus</option><option value="cap1">Caption 1</option></select></div>
   </div>
-  <div class="btns"><button id="gen">Generieren</button><button class="ghost" id="savePrefs">Einstellungen speichern</button><button class="ghost" id="clear">Zurücksetzen</button><button class="secondary" id="share" title="WhatsApp / Teilen">Teilen</button></div>
-  <div class="small">Hinweis: Partner‑Tag & Einstellungen werden nur auf diesem Gerät gespeichert.</div>
+  <div class="btns">
+    <button id="gen">Generieren</button>
+    <button class="ghost" id="savePrefs">Einstellungen speichern</button>
+    <button class="ghost" id="clear">Zurücksetzen</button>
+    <button class="secondary" id="share">Teilen</button>
+    <button class="ghost" id="resetCache">Cache zurücksetzen</button>
+  </div>
+  <div class="small">Hinweis: Partner-Tag & Einstellungen werden nur auf diesem Gerät gespeichert.</div>
 </div>
 
 <div class="card grid" style="margin-top:14px;">
-  <div class="sectionTitle"><span class="bar"></span><strong>Ausgabe</strong></div>
-  <div class="grid"><div class="pill">Affiliate‑Link</div><div id="asinOut" class="small"></div><div id="linkOut" class="out"></div></div>
+  <div class="grid"><div class="pill">Affiliate-Link</div><div id="asinOut" class="small"></div><div id="linkOut" class="out"></div></div>
   <div class="grid"><div class="pill">Caption 1 – Direkt auf Kauf getrimmt</div><div class="out caption" id="cap1"></div><div class="btns"><button class="copy" data-copy="#cap1">Kopieren</button></div></div>
   <div class="grid"><div class="pill">Caption 2 – Nutzen + Beweise + Dringlichkeit</div><div class="out caption" id="cap2"></div><div class="btns"><button class="copy" data-copy="#cap2">Kopieren</button></div></div>
-  <div class="grid"><div class="pill">Caption 3 – Mini‑Story</div><div class="out caption" id="cap3"></div><div class="btns"><button class="copy" data-copy="#cap3">Kopieren</button></div></div>
+  <div class="grid"><div class="pill">Caption 3 – Mini-Story</div><div class="out caption" id="cap3"></div><div class="btns"><button class="copy" data-copy="#cap3">Kopieren</button></div></div>
   <div class="grid"><div class="pill">Caption 4 – Deal/Schnäppchen</div><div class="out caption" id="cap4"></div><div class="btns"><button class="copy" data-copy="#cap4">Kopieren</button></div></div>
   <div class="grid"><div class="pill">Caption 5 – Technik/Specs</div><div class="out caption" id="cap5"></div><div class="btns"><button class="copy" data-copy="#cap5">Kopieren</button></div></div>
   <div class="grid"><div class="pill">Caption 6 – Vergleich/Konkurrenz</div><div class="out caption" id="cap6"></div><div class="btns"><button class="copy" data-copy="#cap6">Kopieren</button><button class="ghost" id="copyAll">Alle kopieren</button></div></div>
@@ -61,34 +72,72 @@ button.secondary{background:linear-gradient(135deg,var(--violet),var(--yellow))}
 </div>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
-let deferredPrompt;const installBtn=document.getElementById('installBtn');window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='inline-block';});installBtn?.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.style.display='none';});if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}
+let deferredPrompt;const installBtn=document.getElementById('installBtn');
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='inline-block';});
+installBtn?.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.style.display='none';});
+if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}
 
-const urlEl=document.getElementById('url'),tagEl=document.getElementById('tag'),nutzenEl=document.getElementById('nutzen'),productEl=document.getElementById('product'),styleEl=document.getElementById('style'),domainEl=document.getElementById('domain'),hashtagsEl=document.getElementById('hashtags'),autocopyEl=document.getElementById('autocopy');const asinOut=document.getElementById('asinOut'),linkOut=document.getElementById('linkOut');const capsEls=[document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3'),document.getElementById('cap4'),document.getElementById('cap5'),document.getElementById('cap6')];
+const urlEl=url, tagEl=tag, nutzenEl=nutzen, productEl=product, styleEl=style, domainEl=domain, hashtagsEl=hashtags, autocopyEl=autocopy;
+const asinOut=document.getElementById('asinOut'), linkOut=document.getElementById('linkOut');
+const capsEls=[cap1,cap2,cap3,cap4,cap5,cap6];
+const toast=document.getElementById('toast');
+const LSKEY='pixeldachs_prefs_v3_1';
+function showToast(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1400)}
 
-const LSKEY='pixeldachs_prefs_v3';function loadPrefs(){try{const raw=localStorage.getItem(LSKEY);if(!raw)return;const p=JSON.parse(raw);if(p.tag)tagEl.value=p.tag;if(p.style)styleEl.value=p.style;if(p.hashtags)hashtagsEl.value=p.hashtags;if(p.autocopy)autocopyEl.value=p.autocopy;}catch{}}function savePrefs(){const p={tag:tagEl.value.trim(),style:styleEl.value,hashtags:hashtagsEl.value.trim(),autocopy:autocopyEl.value};localStorage.setItem(LSKEY,JSON.stringify(p));alert('Einstellungen gespeichert');}
-loadPrefs();document.getElementById('savePrefs').addEventListener('click',savePrefs);
+function loadPrefs(){try{const raw=localStorage.getItem(LSKEY);if(!raw)return;const p=JSON.parse(raw);if(p.tag)tagEl.value=p.tag;if(p.style)styleEl.value=p.style;if(p.hashtags)hashtagsEl.value=p.hashtags;if(p.autocopy)autocopyEl.value=p.autocopy;}catch{}}
+function savePrefs(){const p={tag:tagEl.value.trim(),style:styleEl.value,hashtags:hashtagsEl.value.trim(),autocopy:autocopyEl.value};localStorage.setItem(LSKEY,JSON.stringify(p));showToast('Einstellungen gespeichert')}
+savePrefsBtn.onclick=savePrefs;loadPrefs();
 
-function extractASIN(input){input=input.trim();if(/^[A-Z0-9]{10}$/.test(input))return input;try{const u=new URL(input);if(u.host.includes('amazon.')){Array.from(domainEl.options).forEach(opt=>{if(opt.value.includes(u.host))domainEl.value=opt.value;});}}catch(e){}const m=input.match(/(?:\/dp\/|\/gp\/product\/|\/product\/)([A-Z0-9]{10})/i);return m?m[1].toUpperCase():null}
+function extractASIN(input){
+  input=(input||'').trim();
+  input=input.replace(/[^A-Za-z0-9\/]/g,'').toUpperCase();
+  if(/^[A-Z0-9]{10}$/.test(input)) return input;
+  try{const u=new URL(input);if(u.host.includes('amazon.')){Array.from(domainEl.options).forEach(opt=>{if(opt.value.includes(u.host))domainEl.value=opt.value;});}}catch(e){}
+  const m=input.match(/(?:\/DP\/|\/GP\/PRODUCT\/|\/PRODUCT\/)([A-Z0-9]{10})/i);
+  return m?m[1].toUpperCase():null;
+}
 function buildLink(asin,tag,domain){const base=(domain||'https://www.amazon.de').replace(/\/$/,'');return `${base}/dp/${asin}?tag=${encodeURIComponent(tag)}`}
-function styleBits(mode){switch(mode){case'retro':return{tone:'frech',spark:'🕶️'};case'entdecker':return{tone:'neugierig',spark:'🧭'};default:return{tone:'klar',spark:'✨'}}}
 function tagsString(){const raw=hashtagsEl.value.trim();return raw?raw.split(',').map(s=>s.trim()).filter(Boolean).join(' '):''}
-function makeCaptions(name,nutzen,link,mode){const s=styleBits(mode);const tags=tagsString();const use=(t)=>tags?`${t}
-${tags}`:t;const c1=use([`${s.spark} ${name}: Lösung in Sekunden`,`• Dafür gemacht: ${nutzen||'schnell zum Ergebnis'}`,`• Bedienung: ein Griff, fertig`,`👉 ${link}`].join('
-'));const c2=use([`Warum ${name} überzeugt:`,`✓ Nutzen: ${nutzen||'direkt spürbar'}`,`✓ top bewertet & oft gekauft`,`✓ fairer Preis`,`Jetzt checken → ${link}`].join('
-'));const c3=use([`Erst Problem – dann Aha: ${name}.`,nutzen?`Genau dafür: ${nutzen}.`:`Schon mehrfach im Alltag gerettet.`,`Einmal genutzt, willst du's behalten.`,`Hier entlang: ${link}`].join('
-'));const c4=use([`🔥 Heute stark: ${name}`,`Sparen statt suchen – zuschlagen solange verfügbar.`,`Direkt zum Angebot → ${link}`].join('
-'));const c5=use([`⚙️ ${name} – die Kurz‑Specs:`,`• Highlight: ${nutzen||'praktischer Einsatz'}`,`• robust & schnell einsatzbereit`,`• Bestseller‑Status`,`Details: ${link}`].join('
-'));const c6=use([`Warum ${name} statt Alternative?`,`• besser bewertet`,`• preislich attraktiv`,`• sofort lieferbar`,`Vergleich hier: ${link}`].join('
-'));return[c1,c2,c3,c4,c5,c6]}
-function render({asin,link,product,nutzen,mode}){const name=product||'Gadget';const arr=makeCaptions(name,nutzen,link,mode);asinOut.textContent=asin?`ASIN erkannt: ${asin}`:'ASIN nicht erkannt – prüfe Eingabe.';linkOut.textContent=link||'';arr.forEach((t,i)=>capsEls[i].textContent=t);if(autocopyEl.value==='cap1'){navigator.clipboard?.writeText(arr[0]).catch(()=>{})}}
-function generate(){const raw=urlEl.value.trim(),tag=tagEl.value.trim(),nutzen=nutzenEl.value.trim(),product=productEl.value.trim(),style=styleEl.value;if(!raw){alert('Bitte Amazon‑URL oder ASIN einfügen.');return}if(!tag){alert('Bitte deinen Partner‑Tag eingeben.');return}const asin=extractASIN(raw);if(!asin){alert('Konnte keine ASIN finden.');return}const link=buildLink(asin,tag,domainEl.value);render({asin,link,product,nutzen,mode:style})}
-document.getElementById('gen').addEventListener('click',generate);
-document.getElementById('clear').addEventListener('click',()=>{[urlEl,nutzenEl,productEl].forEach(el=>el.value='');asinOut.textContent='';linkOut.textContent='';capsEls.forEach(el=>el.textContent='')});
-document.querySelectorAll('button.copy').forEach(btn=>{btn.addEventListener('click',async()=>{const sel=btn.getAttribute('data-copy');const el=document.querySelector(sel);if(!el)return;try{await navigator.clipboard.writeText(el.textContent);btn.textContent='Kopiert ✓';setTimeout(()=>btn.textContent='Kopieren',1200)}catch{alert('Konnte nicht kopieren.')}})});
-document.getElementById('copyAll').addEventListener('click',async()=>{const all=capsEls.map(el=>el.textContent).filter(Boolean).join('
-
-');if(!all){alert('Nichts zum Kopieren.');return}try{await navigator.clipboard.writeText(all);document.getElementById('copyAll').textContent='Alle kopiert ✓';setTimeout(()=>document.getElementById('copyAll').textContent='Alle kopieren',1200)}catch{alert('Konnte nicht kopieren.')}});
-document.getElementById('share').addEventListener('click',async()=>{const text=capsEls.find(el=>el.textContent)?.textContent||linkOut.textContent;if(!text){alert('Bitte zuerst generieren.');return}if(navigator.share){try{await navigator.share({text})}catch{}}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}});
-urlEl.addEventListener('change',()=>{const v=urlEl.value.trim();try{const u=new URL(v);Array.from(domainEl.options).forEach(opt=>{if(opt.value.includes(u.host))domainEl.value=opt.value})}catch{}});
-</script></body></html>
+function makeCaptions(name,nutzen,link){
+  const tags=tagsString();const add=(t)=>tags?`${t}
+${tags}`:t;
+  const c1=add([`🔦 ${name}: Lösung in Sekunden`,nutzen?`• Dafür gemacht: ${nutzen}`:`• Spart Zeit & Nerven`,`• Ein Griff, fertig`,`👉 ${link}`].join('
+'));
+  const c2=add([`Warum ${name} überzeugt:`,`✓ Nutzen: ${nutzen||'direkt spürbar'}`,`✓ top bewertet & oft gekauft`,`✓ fairer Preis`,`Jetzt checken → ${link}`].join('
+'));
+  const c3=add([`Erst dunkel – dann Aha mit ${name}.`,`${nutzen||'Im Alltag schon mehrfach gerettet.'}`,`Einmal probiert, willst du's behalten.`,`Hier entlang: ${link}`].join('
+'));
+  const c4=add([`🔥 Heute stark: ${name}`,`Sparen statt suchen – solange verfügbar.`,`Direkt zum Angebot → ${link}`].join('
+'));
+  const c5=add([`⚙️ ${name} – Kurz-Specs:`,`• Highlight: ${nutzen||'praktischer Einsatz'}`,`• robust & schnell einsatzbereit`,`• Bestseller-Status`,`Details: ${link}`].join('
+'));
+  const c6=add([`Warum ${name} statt Alternative?`,`• besser bewertet`,`• preislich attraktiv`,`• sofort lieferbar`,`Vergleich hier: ${link}`].join('
+'));
+  return[c1,c2,c3,c4,c5,c6];
+}
+function render({asin,link,product,nutzen}){
+  const name=product||'Gadget';
+  const arr=makeCaptions(name,nutzen,link);
+  asinOut.textContent=asin?`ASIN erkannt: ${asin}`:'ASIN nicht erkannt – prüfe Eingabe.';
+  linkOut.textContent=link||'';
+  arr.forEach((t,i)=>capsEls[i].textContent=t);
+  if(autocopyEl.value==='cap1'){navigator.clipboard?.writeText(arr[0]).then(()=>showToast('Caption 1 kopiert'))}
+}
+gen.onclick=function(){
+  const raw=urlEl.value.trim(), tag=tagEl.value.trim(), nutzen=nutzenEl.value.trim(), product=productEl.value.trim();
+  if(!raw){showToast('Bitte Amazon-URL oder ASIN eingeben.');return}
+  if(!tag){showToast('Partner-Tag fehlt.');return}
+  const asin=extractASIN(raw);if(!asin){showToast('Keine ASIN gefunden.');return}
+  const link=buildLink(asin,tag,domainEl.value);render({asin,link,product,nutzen});
+}
+clear.onclick=function(){[urlEl,nutzenEl,productEl].forEach(el=>el.value='');asinOut.textContent='';linkOut.textContent='';capsEls.forEach(el=>el.textContent='')}
+document.querySelectorAll('button.copy').forEach(btn=>btn.addEventListener('click',async()=>{const sel=btn.getAttribute('data-copy');const el=document.querySelector(sel);if(!el)return;try{await navigator.clipboard.writeText(el.textContent);btn.textContent='Kopiert ✓';setTimeout(()=>btn.textContent='Kopieren',1100)}catch{showToast('Kopieren nicht möglich')}}));
+copyAll.onclick=async function(){const all=capsEls.map(el=>el.textContent).filter(Boolean).join('\n\n');if(!all){showToast('Nichts zum Kopieren.');return}try{await navigator.clipboard.writeText(all);copyAll.textContent='Alle kopiert ✓';setTimeout(()=>copyAll.textContent='Alle kopieren',1100)}catch{showToast('Kopieren nicht möglich')}}
+share.onclick=async function(){const text=capsEls.find(el=>el.textContent)?.textContent||linkOut.textContent;if(!text){showToast('Bitte erst generieren.');return}if(navigator.share){try{await navigator.share({text})}catch{}}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}}
+resetCache.onclick=async function(){try{if('caches'in window){const names=await caches.keys();await Promise.all(names.map(n=>caches.delete(n)));}if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}localStorage.removeItem(LSKEY);showToast('Cache & SW gelöscht – lade neu …');setTimeout(()=>location.reload(true),800);}catch(e){showToast('Reset fehlgeschlagen')}}
+urlEl.addEventListener('change',()=>{const v=urlEl.value.trim();try{const u=new URL(v);Array.from(domainEl.options).forEach(opt=>{if(opt.value.includes(u.host))domainEl.value=opt.value})}catch{}})
+</script>
+</body></html>

@@ -1,6 +1,6 @@
 {
-  "name": "Pixeldachs Post‑Maker",
-  "short_name": "Post‑Maker",
+  "name": "Pixeldachs Post-Maker",
+  "short_name": "Post-Maker",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0a0a0b",
