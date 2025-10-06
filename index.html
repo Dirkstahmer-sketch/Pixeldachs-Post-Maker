@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Pixeldachs Post-Maker v3.6.2</title>
+<title>Pixeldachs Post-Maker v3.6.3</title>
 <meta name="theme-color" content="#0a0a0b"/>
 <link rel="manifest" href="manifest.webmanifest"/>
 <style>
@@ -29,14 +29,17 @@ button.secondary{background:linear-gradient(135deg,var(--violet),var(--yellow));
 .footer{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .toast{position:fixed;left:12px;right:12px;bottom:12px;background:#111216;color:#e5e7eb;border:1px solid #2c2f3d;border-radius:12px;padding:10px 12px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s}.toast.show{opacity:1;transform:translateY(0)}
 .vault-item{border:1px dashed var(--outline);border-radius:12px;padding:10px}
-.hidden{display:none}
-/* Button Menü */
+/* Button Menu as anchors for fallback */
 .menu{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0 14px}
-.menu button{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:14px;border:1px solid var(--outline);background:#111216;color:#e5e7eb;box-shadow:none}
-.menu button.active{background:linear-gradient(135deg,var(--violet),var(--yellow));color:#0a0a0b;font-weight:900}
-.menu button .ico{font-size:18px}
+.menu a.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:14px;border:1px solid var(--outline);background:#111216;text-decoration:none;color:#e5e7eb}
+.menu a.btn.active{background:linear-gradient(135deg,var(--violet),var(--yellow));color:#0a0a0b;font-weight:900}
+.menu a.btn .ico{font-size:18px}
 @media(min-width:900px){.menu{grid-template-columns:repeat(5,1fr)}}
-/* Layout */
+/* Panes with CSS fallback via :target */
+.pane{display:none}
+.pane.active{display:block}
+.pane:target{display:block}
+/* Layout bits */
 .hero{display:grid;gap:12px}@media(min-width:900px){.hero{grid-template-columns:1fr 1fr}}
 .heroCard{display:flex;flex-direction:column;gap:8px;justify-content:space-between;background:linear-gradient(135deg,#111216,#0c0d12);border:1px solid var(--outline);border-radius:18px;padding:18px}
 .heroCard h2{margin:0}.kicker{color:#a1a1b0;font-size:13px}
@@ -52,22 +55,22 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
 <div class="wrap">
   <header>
     <div class="logoWrap"><img src="logo.png" alt="Pixeldachs"/></div>
-    <div><h1>Pixeldachs Post-Maker</h1><div class="sub">v3.6.2 – Button-Menü Bugfix</div></div>
+    <div><h1>Pixeldachs Post-Maker</h1><div class="sub">v3.6.3 – Button-Fallback & Chrome Fix</div></div>
   </header>
   <div class="band"></div>
 
-  <!-- BUTTON MENU -->
+  <!-- MENU as anchors -->
   <div class="menu" role="tablist" aria-label="Hauptmenü">
-    <button class="active" data-go="home" aria-selected="true"><span class="ico">🏠</span> Start</button>
-    <button data-go="texts"><span class="ico">✍️</span> Texte</button>
-    <button data-go="analytics"><span class="ico">📊</span> Analyse</button>
-    <button data-go="images"><span class="ico">🖼️</span> Bilder</button>
-    <button data-go="tiles"><span class="ico">🔲</span> Kacheln</button>
-    <button data-go="settings"><span class="ico">⚙️</span> Einstellungen</button>
+    <a role="button" href="#home" class="btn active" data-go="home"><span class="ico">🏠</span> Start</a>
+    <a role="button" href="#texts" class="btn" data-go="texts"><span class="ico">✍️</span> Texte</a>
+    <a role="button" href="#analytics" class="btn" data-go="analytics"><span class="ico">📊</span> Analyse</a>
+    <a role="button" href="#images" class="btn" data-go="images"><span class="ico">🖼️</span> Bilder</a>
+    <a role="button" href="#tiles" class="btn" data-go="tiles"><span class="ico">🔲</span> Kacheln</a>
+    <a role="button" href="#settings" class="btn" data-go="settings"><span class="ico">⚙️</span> Einstellungen</a>
   </div>
 
   <!-- HOME -->
-  <section id="home" class="grid" style="margin-top:6px;">
+  <section id="home" class="pane active" style="margin-top:6px;">
     <div class="hero">
       <div class="heroCard">
         <div>
@@ -75,7 +78,7 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
           <h2>Texte – Pixeldachs entdeckt</h2>
           <p>ASIN/URL einfügen (oder via Teilen senden) → Tracking wählen → bis zu 3 Pixeldachs-Varianten generieren → WhatsApp teilen.</p>
         </div>
-        <div class="right"><button class="secondary" data-go="texts">Los geht's</button></div>
+        <div class="right"><a role="button" href="#texts" class="btn ghost" data-go="texts">Los geht's</a></div>
       </div>
       <div class="heroCard">
         <div>
@@ -83,13 +86,13 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
           <h2>Kachel-Designer</h2>
           <p>Erzeuge 1080×1080 oder 16:9 Promo-Kacheln mit 3 Stilen, Logo-Toggle & Hashtags.</p>
         </div>
-        <div class="right"><button class="ghost" data-go="tiles">Zu Kacheln</button></div>
+        <div class="right"><a role="button" href="#tiles" class="btn ghost" data-go="tiles">Zu Kacheln</a></div>
       </div>
     </div>
   </section>
 
   <!-- TEXTS -->
-  <section id="texts" class="hidden" style="margin-top:6px;">
+  <section id="texts" class="pane" style="margin-top:6px;">
     <div class="card grid">
       <div class="row">
         <div><label for="url">Amazon URL oder ASIN</label><input type="text" id="url" placeholder="https://www.amazon.de/dp/B0C123ABCD/ oder B0C123ABCD"></div>
@@ -125,6 +128,13 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
         <div><label for="hashtags">Hashtag-Presets (kommasepariert)</label><input type="text" id="hashtags" placeholder="#pixeldachs,#entdeckt,#gadget,#amazonfinds"></div>
         <div><label for="count">Anzahl Varianten (max. 3)</label><select id="count"><option>1</option><option selected>2</option><option>3</option></select></div>
       </div>
+      <div class="btns">
+        <button id="gen">Generieren</button>
+        <button class="ghost" id="savePrefsBtn">Einstellungen speichern</button>
+        <button class="ghost" id="clear">Zurücksetzen</button>
+        <button class="secondary" id="share">Teilen</button>
+      </div>
+      <div class="small">Tracking-ID & Einstellungen werden nur lokal auf deinem Gerät gespeichert.</div>
     </div>
 
     <div class="card grid" style="margin-top:6px;">
@@ -139,7 +149,7 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
   </section>
 
   <!-- ANALYTICS -->
-  <section id="analytics" class="hidden" style="margin-top:6px;">
+  <section id="analytics" class="pane" style="margin-top:6px;">
     <div class="card grid">
       <div class="row">
         <div class="out"><div class="pill">Zusammenfassung</div><div id="sumStats" class="small"></div></div>
@@ -157,7 +167,7 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
   </section>
 
   <!-- IMAGES -->
-  <section id="images" class="hidden" style="margin-top:6px;">
+  <section id="images" class="pane" style="margin-top:6px;">
     <div class="card grid">
       <div class="row">
         <div>
@@ -216,7 +226,7 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
   </section>
 
   <!-- TILES -->
-  <section id="tiles" class="hidden" style="margin-top:6px;">
+  <section id="tiles" class="pane" style="margin-top:6px;">
     <div class="card grid">
       <div class="row">
         <div><label for="tileText">Kachel-Text (kurz)</label><input type="text" id="tileText" placeholder="z. B. UV-Lampe im Check"></div>
@@ -247,7 +257,7 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
   </section>
 
   <!-- SETTINGS -->
-  <section id="settings" class="hidden" style="margin-top:6px;">
+  <section id="settings" class="pane" style="margin-top:6px;">
     <div class="card grid">
       <div class="pill">App-Wartung</div>
       <div class="btns">
@@ -265,31 +275,49 @@ canvas{background:#0b0c12;border:1px solid var(--outline);border-radius:12px;max
 // --- Helpers ---
 function $(sel){return document.querySelector(sel)}
 const toast=$('#toast'); function showToast(m){ toast.textContent=m; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 1400); }
-const LSKEY='pixeldachs_prefs_v3_6_2'; const VAULT_KEY='pixeldachs_vault_v3_6_2'; const STRAT_KEY='pixeldachs_strategy_v3_6_2';
+const LSKEY='pixeldachs_prefs_v3_6_3'; const VAULT_KEY='pixeldachs_vault_v3_6_3'; const STRAT_KEY='pixeldachs_strategy_v3_6_3';
 
-// --- Navigation (Buttons) ---
+// --- Router ---
 const sections={home:$('#home'),texts:$('#texts'),analytics:$('#analytics'),images:$('#images'),tiles:$('#tiles'),settings:$('#settings')};
-function show(name){ Object.values(sections).forEach(s=>s.classList.add('hidden')); Object.keys(sections).forEach(k=>{ const b=document.querySelector('.menu button[data-go="'+k+'"]'); if(b) b.classList.remove('active'); }); sections[name].classList.remove('hidden'); const act=document.querySelector('.menu button[data-go="'+name+'"]'); if(act) act.classList.add('active'); window.location.hash=name; }
-document.addEventListener('click', (e)=>{ const btn=e.target.closest('[data-go]'); if(!btn) return; e.preventDefault(); const go=btn.getAttribute('data-go'); if(go && sections[go]) show(go); });
-if(location.hash && sections[location.hash.slice(1)]) show(location.hash.slice(1)); else show('home');
+function activate(name){
+  if(!sections[name]) name='home';
+  Object.values(sections).forEach(s=>s.classList.remove('active'));
+  sections[name].classList.add('active');
+  // menu state
+  document.querySelectorAll('.menu a.btn').forEach(a=>a.classList.remove('active'));
+  const act=document.querySelector('.menu a.btn[data-go="'+name+'"]'); if(act) act.classList.add('active');
+  if(name==='analytics'){ try{ analyze(); }catch(e){} }
+}
+function showFromHash(){
+  const name=(location.hash||'#home').replace('#','');
+  activate(name);
+}
+document.addEventListener('click', (e)=>{
+  const a=e.target.closest('a[data-go]'); if(!a) return;
+  // Let hash update for fallback; also run SPA
+  setTimeout(showFromHash,0);
+});
+window.addEventListener('hashchange', showFromHash);
+showFromHash(); // initial
 
 // --- PWA + Share Target ---
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }); }
-(function(){ try{ const u=new URL(location.href); const shared=u.searchParams.get('url')||u.searchParams.get('text'); if(shared){ show('texts'); $('#url').value=shared; showToast('Geteilte URL übernommen'); history.replaceState({},'',location.pathname); } }catch{} })();
+(function(){ try{ const u=new URL(location.href); const shared=u.searchParams.get('url')||u.searchParams.get('text'); if(shared){ location.hash='#texts'; $('#url').value=shared; showToast('Geteilte URL übernommen'); history.replaceState({},'',location.pathname+'#texts'); } }catch{} })();
 
 // --- Hooks & CTAs ---
 const HOOKS={Entdecker:["Heute hat der Pixeldachs etwas Spannendes entdeckt 🦡","Kleiner Fund am Strand – großer Aha-Moment 😎","Schon mal probiert? Der Pixeldachs war neugierig …","Mini-Experiment vom Pixeldachs – mit verblüffendem Ergebnis","Geheimtipp für Abenteurer und Finder 🧭"],Deals:["Schnäppchen-Alarm 💸 – der Pixeldachs war wieder unterwegs!","Kurzzeitig günstiger! 🔥","Preis-Leistungs-Hit, den man leicht übersieht 👀","Heute spart der Pixeldachs richtig – und du vielleicht auch","Deal entdeckt – bevor er wieder weg ist ⏳"],Alltag:["Mini-Trick vom Pixeldachs 😉","So simpel, aber so praktisch 🧠","Haushalts-Helfer, der wirklich was bringt","Kleines Tool, große Wirkung","Für Haustier- und Alltagssituationen top 🐾"]};
 const CTAS={Entdecker:["Viel Erfolg beim Suchen 🦡","Zeig mal, was du findest 👇","Hier entlang → {link}"],Deals:["Hier entdecken → {link}","Nur solange der Deal läuft 🔥","Bevor es weg ist → {link}"],Alltag:["Ausprobieren lohnt sich 😉","Schon getestet? 🦡","Direkt checken → {link}"]};
 function rand(a){return a[Math.floor(Math.random()*a.length)]}
-function tagsString(){const raw=$('#hashtags')?.value?.trim?.()||"";return raw?raw.split(',').map(s=>s.trim()).filter(Boolean).join(' '):''}
+function tagsString(){const raw=$('#hashtags')&&$('#hashtags').value?$('#hashtags').value.trim():"";return raw?raw.split(',').map(s=>s.trim()).filter(Boolean).join(' '):''}
 
 // --- Prefs ---
 function loadPrefs(){ try{const raw=localStorage.getItem(LSKEY); if(!raw) return; const p=JSON.parse(raw); ['tag','style','hashtags','count','domain'].forEach(k=>{ if(p[k]!==undefined && $('#'+k)) $('#'+k).value=p[k]; }); }catch{} }
 function savePrefs(){ const p={tag:$('#tag').value, style:$('#style').value, hashtags:$('#hashtags').value, count:$('#count').value, domain:$('#domain').value}; localStorage.setItem(LSKEY, JSON.stringify(p)); showToast('Einstellungen gespeichert'); }
-document.getElementById('savePrefsBtn')?.addEventListener('click', savePrefs); loadPrefs();
+var saveBtn=document.getElementById('savePrefsBtn'); if(saveBtn) saveBtn.addEventListener('click', savePrefs); loadPrefs();
+var evergreen=document.getElementById('evergreen'); if(evergreen) evergreen.addEventListener('change',()=>{ if(evergreen.value) $('#product').value=evergreen.value; });
 
 // --- ASIN & Link ---
-function extractASIN(input){ input=(input||'').trim(); let cleaned=input.replace(/[\s\u200B]+/g,'').toUpperCase(); const m1=cleaned.match(/(?:\/DP\/|\/GP\/PRODUCT\/|\/PRODUCT\/)([A-Z0-9]{10})/i); if(m1) return m1[1].toUpperCase(); const m2=cleaned.match(/([A-Z0-9]{10})/); if(m2) return m2[1].toUpperCase(); return null; }
+function extractASIN(input){ input=(input||'').trim(); let cleaned=input.replace(/[\s\u200B]+/g,'').toUpperCase(); var m1=cleaned.match(/(?:\/DP\/|\/GP\/PRODUCT\/|\/PRODUCT\/)([A-Z0-9]{10})/i); if(m1) return m1[1].toUpperCase(); var m2=cleaned.match(/([A-Z0-9]{10})/); if(m2) return m2[1].toUpperCase(); return null; }
 function buildLink(asin, tag, domain){ const base=(domain||'https://www.amazon.de').replace(/\/$/,''); return base + '/dp/' + asin + '?tag=' + encodeURIComponent(tag); }
 
 // --- Caption Engine ---
@@ -310,23 +338,29 @@ function addToVault(entry){ try{ const raw=localStorage.getItem(VAULT_KEY); cons
 function renderVault(){ const vaultWrap=$('#vault'); if(!vaultWrap) return; vaultWrap.innerHTML=''; try{ const raw=localStorage.getItem(VAULT_KEY); if(!raw) return; const list=JSON.parse(raw).slice(0,20); list.forEach(item=>{ const div=document.createElement('div'); div.className='vault-item'; const preview=item.text.length>220? item.text.slice(0,220)+'…' : item.text; div.innerHTML=`<div class="small">${item.date} · ${item.asin} · ${item.style}</div><div style="margin:6px 0" class="out caption">${preview}</div><div class="btns"><button class="ghost">Kopieren</button></div>`; div.querySelector('button').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(item.text); showToast('Vault-Text kopiert'); }catch{ showToast('Kopieren nicht möglich'); } }); vaultWrap.appendChild(div); }); }catch{} }
 renderVault();
 function exportVault(){ try{ const raw=localStorage.getItem(VAULT_KEY); if(!raw){ showToast('Vault leer'); return; } const list=JSON.parse(raw); const header='date,asin,style,link\n'; const rows=list.map(v=>`"${v.date}","${v.asin}","${v.style}","${v.link}"`).join('\n'); const csv=header+rows; navigator.clipboard.writeText(csv).then(()=>showToast('CSV in Zwischenablage')).catch(()=>showToast('CSV Kopie fehlgeschlagen')); }catch{ showToast('Export fehlgeschlagen'); } }
-document.getElementById('exportVault').addEventListener('click', exportVault);
+var exportVaultBtn=document.getElementById('exportVault'); if(exportVaultBtn) exportVaultBtn.addEventListener('click', exportVault);
 
 // --- Generate ---
-document.getElementById('gen')?.addEventListener('click',()=>{ const raw=$('#url').value.trim(); const tag=$('#tag').value.trim(); const nutzen=$('#nutzen').value.trim(); const name=$('#product').value.trim()||'Gadget'; const style=$('#style').value; if(!raw){ showToast('Bitte Amazon-URL oder ASIN eingeben.'); return; } if(!tag){ showToast('Tracking-ID fehlt.'); return; } const asin=extractASIN(raw); if(!asin){ showToast('Keine ASIN gefunden.'); return; } const link=buildLink(asin, tag, $('#domain').value); $('#asinOut').textContent='ASIN erkannt: '+asin; $('#linkOut').textContent=link; const n=Math.min(3, parseInt($('#count').value,10)||1); const out=[]; for(let i=0;i<n;i++) out.push(makeCaption(style, name, nutzen, link)); renderCaptions(out); const timestamp=new Date().toISOString().replace(/[-:T]/g,'').slice(0,12); addToVault({date:timestamp, asin, style, link, text:out[0]}); });
-document.getElementById('clear')?.addEventListener('click',()=>{ ['url','nutzen','product'].forEach(id=>{$('#'+id).value=''}); $('#asinOut').textContent=''; $('#linkOut').textContent=''; $('#caps').innerHTML=''; });
-document.getElementById('share')?.addEventListener('click',async()=>{ const first=document.querySelector('#caps .caption'); const text=first?first.textContent:$('#linkOut').textContent; if(!text){ showToast('Bitte erst generieren.'); return; } if(navigator.share){ try{ await navigator.share({text}); }catch{} } else{ window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); } });
+var genBtn=document.getElementById('gen'); if(genBtn) genBtn.addEventListener('click',()=>{
+  const raw=$('#url').value.trim(); const tag=$('#tag').value.trim(); const nutzen=$('#nutzen').value.trim(); const name=$('#product').value.trim()||'Gadget'; const style=$('#style').value;
+  if(!raw){ showToast('Bitte Amazon-URL oder ASIN eingeben.'); return; } if(!tag){ showToast('Tracking-ID fehlt.'); return; }
+  const asin=extractASIN(raw); if(!asin){ showToast('Keine ASIN gefunden.'); return; }
+  const link=buildLink(asin, tag, $('#domain').value); $('#asinOut').textContent='ASIN erkannt: '+asin; $('#linkOut').textContent=link;
+  const n=Math.min(3, parseInt($('#count').value,10)||1); const out=[]; for(let i=0;i<n;i++) out.push(makeCaption(style, name, nutzen, link)); renderCaptions(out);
+  const timestamp=new Date().toISOString().replace(/[-:T]/g,'').slice(0,12); addToVault({date:timestamp, asin, style, link, text:out[0]});
+});
+var clearBtn=document.getElementById('clear'); if(clearBtn) clearBtn.addEventListener('click',()=>{ ['url','nutzen','product'].forEach(id=>{$('#'+id).value=''}); $('#asinOut').textContent=''; $('#linkOut').textContent=''; $('#caps').innerHTML=''; });
+var shareBtn=document.getElementById('share'); if(shareBtn) shareBtn.addEventListener('click',async()=>{ const first=document.querySelector('#caps .caption'); const text=first?first.textContent:$('#linkOut').textContent; if(!text){ showToast('Bitte erst generieren.'); return; } if(navigator.share){ try{ await navigator.share({text}); }catch{} } else{ window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); } });
 
 // --- Analytics ---
 function analyze(){ const sum=$('#sumStats'), top=$('#topTags'), last=$('#lastPosts'); sum.textContent = top.textContent = ''; last.innerHTML=''; try{ const raw=localStorage.getItem(VAULT_KEY); if(!raw){ sum.textContent='Noch keine Daten.'; drawStylePie({}); drawTagsBar([]); return; } const list=JSON.parse(raw); const total=list.length; const styles={Entdecker:0,Deals:0,Alltag:0}; const hashtags={}; list.forEach(v=>{ styles[v.style]=(styles[v.style]||0)+1; const m=v.text.match(/#[\wäöüÄÖÜß]+/g); if(m){ m.forEach(t=>{ hashtags[t]=(hashtags[t]||0)+1; }); } }); sum.textContent = `Gesamt: ${total} · Stile – Entdecker ${styles.Entdecker||0}, Deals ${styles.Deals||0}, Alltag ${styles.Alltag||0}`; const top5arr = Object.entries(hashtags).sort((a,b)=>b[1]-a[1]).slice(0,10); top.textContent = top5arr.length? top5arr.map(([k,v])=>k+' ('+v+')').join('  ') : 'Keine Hashtags gefunden.'; drawStylePie(styles); drawTagsBar(top5arr); list.slice(0,10).forEach(v=>{ const div=document.createElement('div'); div.className='vault-item'; const preview=v.text.length>220? v.text.slice(0,220)+'…' : v.text; div.innerHTML=`<div class="small">${v.date} · ${v.asin} · ${v.style}</div><div class="out caption">${preview}</div>`; last.appendChild(div); }); }catch{ sum.textContent='Fehler bei der Analyse.'; } }
-document.querySelector('[data-go="analytics"]').addEventListener('click', analyze);
 
 // --- Charts ---
 function drawStylePie(styles){ const c=document.getElementById('stylePie'); if(!c) return; const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); const vals=[styles.Entdecker||0, styles.Deals||0, styles.Alltag||0]; const labels=['Entdecker','Deals','Alltag']; const total=vals.reduce((a,b)=>a+b,0)||1; let start=0; const colors=['#5b3fb3','#ff2f7a','#43b047']; vals.forEach((v,i)=>{ const angle=(v/total)*Math.PI*2; ctx.beginPath(); ctx.moveTo(c.width/2,c.height/2); ctx.arc(c.width/2,c.height/2,120,start,start+angle); ctx.closePath(); ctx.fillStyle=colors[i%colors.length]; ctx.fill(); start+=angle; ctx.fillStyle='#e5e7eb'; ctx.fillRect(20,20+i*22,12,12); ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.fillText(labels[i]+': '+v, 38,30+i*22); }); }
 function drawTagsBar(entries){ const c=document.getElementById('tagsBar'); if(!c) return; const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); const pad=30; const maxW=c.width-pad*2; const maxH=c.height-pad*2; const vals=entries.map(e=>e[1]); const labels=entries.map(e=>e[0]); const max=Math.max(1, ...vals); const barW=maxW/(Math.max(1, vals.length)); const baseY=c.height-pad; ctx.strokeStyle='#2c2f3d'; ctx.strokeRect(pad,pad,maxW,maxH); vals.forEach((v,i)=>{ const h = (v/max)*maxH; ctx.fillStyle='#ffd400'; ctx.fillRect(pad+i*barW+6, baseY-h, barW-12, h); ctx.fillStyle='#cbd5e1'; ctx.font='11px sans-serif'; ctx.fillText(String(v), pad+i*barW+10, baseY-h-6); ctx.save(); ctx.translate(pad+i*barW+10, baseY+12); ctx.rotate(-Math.PI/4); ctx.fillText(labels[i], 0,0); ctx.restore(); }); }
 
 // --- Images (IndexedDB) ---
-let db; const DB_NAME='pixeldachs_images_db_v3_6_2'; const STORE='images';
+let db; const DB_NAME='pixeldachs_images_db_v3_6_3'; const STORE='images';
 function openDB(){ return new Promise((res,rej)=>{ const r=indexedDB.open(DB_NAME,1); r.onupgradeneeded=(e)=>{ const db=e.target.result; if(!db.objectStoreNames.contains(STORE)){ db.createObjectStore(STORE,{keyPath:'id',autoIncrement:true}); } }; r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
 async function withDB(fn){ db=db||await openDB(); return fn(db); }
 function addImage(rec){ return withDB(d=> new Promise((res,rej)=>{ const tx=d.transaction(STORE,'readwrite'); tx.objectStore(STORE).add(rec).onsuccess=(e)=>res(e.target.result); tx.onerror=()=>rej(tx.error);})); }
@@ -336,10 +370,10 @@ function clearImages(){ return withDB(d=> new Promise((res,rej)=>{ const tx=d.tr
 
 let selectedImageId=null;
 async function refreshGallery(){ const gal=$('#gallery'); gal.innerHTML=''; const items=await getAllImages(); if(!items.length){ gal.innerHTML='<div class="small">Noch keine Bilder gespeichert.</div>'; return; } items.sort((a,b)=>b.added-a.added); items.forEach(it=>{ const div=document.createElement('div'); div.className='thumb'; div.innerHTML=`<img src="${it.data}" alt="${it.name}"/><div class="meta">${it.name} · ${(it.size/1024).toFixed(1)} KB</div><div class="actions"><button class="ghost" data-act="select">${selectedImageId===it.id?'Ausgewählt ✓':'Auswählen'}</button><button class="ghost" data-act="copy">Link kopieren</button><button class="ghost" data-act="dl">Download</button><button class="ghost" data-act="del">Löschen</button></div>`; div.querySelector('[data-act="select"]').addEventListener('click',()=>{ selectedImageId=it.id; refreshGallery(); loadOnCanvas(it.data); }); div.querySelector('[data-act="copy"]').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(it.data); showToast('Bild-Data-URL kopiert'); }catch{ showToast('Kopieren fehlgeschlagen'); } }); div.querySelector('[data-act="dl"]').addEventListener('click',()=>{ const a=document.createElement('a'); a.href=it.data; a.download=it.name||'pixeldachs.png'; document.body.appendChild(a); a.click(); a.remove(); }); div.querySelector('[data-act="del"]').addEventListener('click',async()=>{ await deleteImage(it.id); if(selectedImageId===it.id) selectedImageId=null; showToast('Bild gelöscht'); refreshGallery(); }); gal.appendChild(div); }); }
-document.getElementById('imgUpload').addEventListener('change', async (e)=>{ const files=[...e.target.files]; for(const f of files){ const reader=new FileReader(); await new Promise((res,rej)=>{ reader.onload=async ()=>{ await addImage({name:f.name,type:f.type,size:f.size,added:Date.now(),data:reader.result}); res(); }; reader.onerror=rej; reader.readAsDataURL(f); }); } showToast(files.length + ' Bild(er) gespeichert'); refreshGallery(); e.target.value=''; });
-document.getElementById('exportJson').addEventListener('click', async()=>{ const items=await getAllImages(); const blob=new Blob([JSON.stringify(items)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pixeldachs_images.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
-document.getElementById('importJson').addEventListener('click', ()=>{ const inp=document.createElement('input'); inp.type='file'; inp.accept='.json,application/json'; inp.onchange=async (e)=>{ const f=e.target.files[0]; if(!f) return; const txt=await f.text(); let arr=[]; try{arr=JSON.parse(txt)}catch{showToast('JSON fehlerhaft'); return;} for(const it of arr){ await addImage({name:it.name||'import.png',type:it.type||'image/png',size:it.size||0,added:Date.now(),data:it.data||''}); } showToast('Import abgeschlossen'); refreshGallery(); }; inp.click(); });
-document.getElementById('clearImages').addEventListener('click', async()=>{ await clearImages(); selectedImageId=null; refreshGallery(); showToast('Alle Bilder gelöscht'); });
+var imgUpload=document.getElementById('imgUpload'); if(imgUpload) imgUpload.addEventListener('change', async (e)=>{ const files=[...e.target.files]; for(const f of files){ const reader=new FileReader(); await new Promise((res,rej)=>{ reader.onload=async ()=>{ await addImage({name:f.name,type:f.type,size:f.size,added:Date.now(),data:reader.result}); res(); }; reader.onerror=rej; reader.readAsDataURL(f); }); } showToast(files.length + ' Bild(er) gespeichert'); refreshGallery(); e.target.value=''; });
+var exportJsonBtn=document.getElementById('exportJson'); if(exportJsonBtn) exportJsonBtn.addEventListener('click', async()=>{ const items=await getAllImages(); const blob=new Blob([JSON.stringify(items)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pixeldachs_images.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
+var importJsonBtn=document.getElementById('importJson'); if(importJsonBtn) importJsonBtn.addEventListener('click', ()=>{ const inp=document.createElement('input'); inp.type='file'; inp.accept='.json,application/json'; inp.onchange=async (e)=>{ const f=e.target.files[0]; if(!f) return; const txt=await f.text(); let arr=[]; try{arr=JSON.parse(txt)}catch{showToast('JSON fehlerhaft'); return;} for(const it of arr){ await addImage({name:it.name||'import.png',type:it.type||'image/png',size:it.size||0,added:Date.now(),data:it.data||''}); } showToast('Import abgeschlossen'); refreshGallery(); }; inp.click(); });
+var clearImagesBtn=document.getElementById('clearImages'); if(clearImagesBtn) clearImagesBtn.addEventListener('click', async()=>{ await clearImages(); selectedImageId=null; refreshGallery(); showToast('Alle Bilder gelöscht'); });
 
 // --- Overlay ---
 const canvas=document.getElementById('overlayCanvas'); const ctx=canvas.getContext('2d');
@@ -351,11 +385,11 @@ function applyOverlay(){ if(!canvasImage){ showToast('Bitte in der Galerie ein B
   ctx.save(); ctx.globalAlpha=Math.max(0,Math.min(1,opacity)); let bx=0,by=0,bw=canvas.width,bh=fontSize*1.8; if(pos.includes('bottom')) by=canvas.height-bh; if(pos.includes('right')) bx=canvas.width-bw; if(pos==='center'){ by=(canvas.height-bh)/2; } ctx.fillStyle='#000'; ctx.fillRect(bx,by,bw,bh); ctx.restore();
   ctx.font='bold '+fontSize+'px sans-serif'; let tx=40, ty= (pos.includes('bottom')? canvas.height - (fontSize*0.9) : fontSize*0.9); if(pos.includes('right')) tx=canvas.width-40; if(pos==='center'){ ty=canvas.height/2; } if(pos.includes('right')){ ctx.textAlign='right'; } else { ctx.textAlign='left'; }
   if(text) drawOutlineText(ctx, text, tx, ty, outline);
-  if(logoOn){ const ls=fontSize*1.2; const lx = pos.includes('right')? (tx - ls - 16) : (tx + 16); const ly = ty - ls/2; try{ ctx.save(); ctx.beginPath(); ctx.roundRect(lx, ly, ls, ls, 12); ctx.clip(); ctx.drawImage(logoImg, lx, ly, ls, ls); ctx.restore(); }catch(e){ ctx.drawImage(logoImg, lx, ly, ls, ls); } }
-  if(sticker){ ctx.save(); ctx.translate(canvas.width-40, 40); ctx.fillStyle='rgba(255,212,0,.9)'; ctx.strokeStyle='rgba(0,0,0,.6)'; ctx.lineWidth=3; ctx.beginPath(); try{ ctx.roundRect(-180,-30,180,60,14);}catch(e){ ctx.rect(-180,-30,180,60);} ctx.fill(); ctx.stroke(); ctx.fillStyle='#0a0a0b'; ctx.font='bold 24px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(sticker, -90, 0); ctx.restore(); }
+  if(logoOn){ const ls=fontSize*1.2; const lx = pos.includes('right')? (tx - ls - 16) : (tx + 16); const ly = ty - ls/2; try{ ctx.save(); ctx.beginPath(); if(ctx.roundRect){ ctx.roundRect(lx, ly, ls, ls, 12); } else { ctx.rect(lx, ly, ls, ls); } ctx.clip(); ctx.drawImage(logoImg, lx, ly, ls, ls); ctx.restore(); }catch(e){ ctx.drawImage(logoImg, lx, ly, ls, ls); } }
+  if(sticker){ ctx.save(); ctx.translate(canvas.width-40, 40); ctx.fillStyle='rgba(255,212,0,.9)'; ctx.strokeStyle='rgba(0,0,0,.6)'; ctx.lineWidth=3; ctx.beginPath(); if(ctx.roundRect){ ctx.roundRect(-180,-30,180,60,14);} else { ctx.rect(-180,-30,180,60);} ctx.fill(); ctx.stroke(); ctx.fillStyle='#0a0a0b'; ctx.font='bold 24px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(sticker, -90, 0); ctx.restore(); }
   const dataURL=canvas.toDataURL('image/png'); const ts=new Date().toISOString().replace(/[-:T]/g,'').slice(0,8); const base=(text||'overlay').toLowerCase().replace(/[^a-z0-9äöüÄÖÜß]+/g,'-').replace(/^-+|-+$/g,''); addImage({name:(base || 'overlay')+'_'+ts+'.png', type:'image/png', size=dataURL.length, added:Date.now(), data:dataURL}).then(()=>{ showToast('Overlay gespeichert (Galerie)'); refreshGallery(); });
 }
-document.getElementById('applyOverlay').addEventListener('click', applyOverlay);
+var applyOverlayBtn=document.getElementById('applyOverlay'); if(applyOverlayBtn) applyOverlayBtn.addEventListener('click', applyOverlay);
 
 // --- Tiles ---
 const tileCanvas=document.getElementById('tileCanvas'); const tctx=tileCanvas.getContext('2d');
@@ -375,12 +409,12 @@ function drawTile(style, text, hashtags, logoOn){
   tctx.save();
   if(style==='retro'){ tctx.fillStyle='rgba(255,212,0,.92)'; tctx.fillRect(40, h*0.65, w-80, 140); tctx.fillStyle='#0a0a0b'; tctx.font='bold 64px sans-serif'; tctx.fillText(text, 60, h*0.65+90); }
   else if(style==='comic'){ tctx.save(); tctx.fillStyle='rgba(0,0,0,.35)'; tctx.fillRect(0, h*0.6, w, h*0.4); tctx.restore(); tctx.font='bold 80px sans-serif'; tctx.strokeStyle='#000'; tctx.lineWidth=6; tctx.strokeText(text, 60, h*0.7); tctx.fillStyle='#fff'; tctx.fillText(text, 60, h*0.7); }
-  else { const grd=tctx.createLinearGradient(40,h*0.6,w-40,h-40); grd.addColorStop(0,'rgba(91,63,179,.9)'); grd.addColorStop(1,'rgba(255,47,122,.9)'); try{ tctx.roundRect(40, h*0.6, w-80, 160, 22); }catch(e){ tctx.rect(40, h*0.6, w-80, 160); } tctx.fillStyle=grd; tctx.fill(); tctx.fillStyle='#fff'; tctx.font='bold 64px sans-serif'; tctx.fillText(text, 60, h*0.6+105); }
+  else { const grd=tctx.createLinearGradient(40,h*0.6,w-40,h-40); grd.addColorStop(0,'rgba(91,63,179,.9)'); grd.addColorStop(1,'rgba(255,47,122,.9)'); if(tctx.roundRect){ tctx.roundRect(40, h*0.6, w-80, 160, 22); } else { tctx.rect(40, h*0.6, w-80, 160); } tctx.fillStyle=grd; tctx.fill(); tctx.fillStyle='#fff'; tctx.font='bold 64px sans-serif'; tctx.fillText(text, 60, h*0.6+105); }
   if(hashtags){ tctx.fillStyle='rgba(203,213,225,.95)'; tctx.font='28px sans-serif'; tctx.fillText(hashtags, 60, h-40); }
-  if(logoOn){ const ls=120; const img=new Image(); img.onload=()=>{ tctx.save(); try{ tctx.beginPath(); tctx.roundRect(w-ls-40,40,ls,ls,18); tctx.clip(); }catch(e){ } tctx.drawImage(img, w-ls-40, 40, ls, ls); tctx.restore(); }; img.src='logo.png'; }
+  if(logoOn){ const ls=120; const img=new Image(); img.onload=()=>{ tctx.save(); if(tctx.roundRect){ tctx.beginPath(); tctx.roundRect(w-ls-40,40,ls,ls,18); tctx.clip(); } tctx.drawImage(img, w-ls-40, 40, ls, ls); tctx.restore(); }; img.src='logo.png'; }
   tctx.restore();
 }
-document.getElementById('makeTile').addEventListener('click', async()=>{
+var makeTileBtn=document.getElementById('makeTile'); if(makeTileBtn) makeTileBtn.addEventListener('click', async()=>{
   const text=($('#tileText').value||'Pixeldachs Tipp').slice(0,40);
   const tags=$('#tileHashtags').value||'';
   const style=$('#tileStyle').value;
@@ -393,18 +427,18 @@ document.getElementById('makeTile').addEventListener('click', async()=>{
   const dataURL=tileCanvas.toDataURL('image/png');
   const ts=new Date().toISOString().replace(/[-:T]/g,'').slice(0,8);
   const base=(text||'kachel').toLowerCase().replace(/[^a-z0-9äöüÄÖÜß]+/g,'-').replace(/^-+|-+$/g,'');
-  addImage({name:(base || 'kachel')+'_'+ts+'.png', type:'image/png', size=dataURL.length, added:Date.now(), data:dataURL}).then(()=>{ showToast('Kachel gespeichert (Galerie)'); refreshGallery(); });
+  addImage({name:(base or 'kachel')+'_'+ts+'.png', type:'image/png', size=dataURL.length, added:Date.now(), data:dataURL}).then(()=>{ showToast('Kachel gespeichert (Galerie)'); refreshGallery(); });
 });
 
 // --- Settings ---
-document.getElementById('resetCache').addEventListener('click', async()=>{
+var resetBtn=document.getElementById('resetCache'); if(resetBtn) resetBtn.addEventListener('click', async()=>{
   try{
     if('caches' in window){ const names=await caches.keys(); await Promise.all(names.map(n=>caches.delete(n))); }
     if('serviceWorker' in navigator){ const regs=await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r=>r.unregister())); }
     showToast('Cache & SW gelöscht – lade neu …'); setTimeout(()=>location.reload(true),800);
   }catch(e){ showToast('Reset fehlgeschlagen'); }
 });
-document.getElementById('clearVault').addEventListener('click', ()=>{ localStorage.removeItem(VAULT_KEY); renderVault(); showToast('Vault geleert'); });
+var clearVaultBtn=document.getElementById('clearVault'); if(clearVaultBtn) clearVaultBtn.addEventListener('click', ()=>{ localStorage.removeItem(VAULT_KEY); renderVault(); showToast('Vault geleert'); });
 </script>
 </body>
 </html>
